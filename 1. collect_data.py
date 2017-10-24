@@ -62,6 +62,7 @@ def main(file_name, starting_value):
     file_name = file_name
     starting_value = starting_value
     training_data = []
+    training_data_mini = []
     for i in list(range(4))[::-1]:
         print(i+1)
         time.sleep(1)
@@ -72,16 +73,20 @@ def main(file_name, starting_value):
     while(True):
         
         if not paused:
-            screen = grab_screen(region=(0,40,1920,1120))
+            screen = grab_screen(region=(0,0,1366,768))
+            screen_mini = screen[605:738, 35:231]
             last_time = time.time()
             # resize to something a bit more acceptable for a CNN
             screen = cv2.resize(screen, (480,270))
             # run a color convert:
             screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
+            screen_mini = cv2.cvtColor(screen_mini, cv2.COLOR_BGR2RGB)
+            
             
             keys = key_check()
             output = keys_to_output(keys)
             training_data.append([screen,output])
+            training_data_mini.append([screen_mini,output])
 
             #print('loop took {} seconds'.format(time.time()-last_time))
             last_time = time.time()
@@ -93,12 +98,14 @@ def main(file_name, starting_value):
             if len(training_data) % 100 == 0:
                 print(len(training_data))
                 
-                if len(training_data) == 500:
+                if len(training_data) == 200:
                     np.save(file_name,training_data)
+                    np.save(file_name[:-4]+'-mini',training_data_mini)
                     print('SAVED')
                     training_data = []
+                    training_data_mini = []
                     starting_value += 1
-                    file_name = 'X:/pygta5/phase7-larger-color/training_data-{}.npy'.format(starting_value)
+                    file_name = 'training_data-{}.npy'.format(starting_value)
 
                     
         keys = key_check()
