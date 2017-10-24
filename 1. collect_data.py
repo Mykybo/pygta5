@@ -98,7 +98,7 @@ def main(file_name, starting_value):
             if len(training_data) % 100 == 0:
                 print(len(training_data))
                 
-                if len(training_data) == 200:
+                if len(training_data) == 500:
                     np.save(file_name,training_data)
                     np.save(file_name[:-4]+'-mini',training_data_mini)
                     print('SAVED')
