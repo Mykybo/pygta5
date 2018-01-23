@@ -71,7 +71,6 @@ def main(file_name, starting_value):
     paused = False
     print('STARTING!!!')
     while(True):
-        
         if not paused:
             screen = grab_screen(region=(0,0,1366,768))
             screen_mini = screen[605:738, 35:231]
